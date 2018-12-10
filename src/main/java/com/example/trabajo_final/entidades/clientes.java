@@ -10,6 +10,9 @@ public class clientes {
     private long id;
     private long cedula;
     private String nombre;
+    private String apellido;
+    private String username;
+    private String password;
     private Date birth_date;
     private String genero;
     private String direccion_envio;
