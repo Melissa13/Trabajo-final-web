@@ -17,8 +17,13 @@ public class clientes {
     private String genero;
     private String direccion_envio;
     private Long cuenta_cancaria;
+    private Byte[] foto;
+    private String ciudad;
+    private String pais;
+    private String email;
 
-    public clientes(long cedula, String nombre, String apellido, String username, String password, Date birth_date, String genero, String direccion_envio, Long cuenta_cancaria) {
+    public clientes(long id, long cedula, String nombre, String apellido, String username, String password, Date birth_date, String genero, String direccion_envio, Long cuenta_cancaria, Byte[] foto, String ciudad, String pais, String email) {
+        this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -28,6 +33,13 @@ public class clientes {
         this.genero = genero;
         this.direccion_envio = direccion_envio;
         this.cuenta_cancaria = cuenta_cancaria;
+        this.foto = foto;
+        this.ciudad = ciudad;
+        this.pais = pais;
+        this.email = email;
+    }
+
+    public clientes() {
     }
 
     public long getId() {
@@ -108,5 +120,37 @@ public class clientes {
 
     public void setCuenta_cancaria(Long cuenta_cancaria) {
         this.cuenta_cancaria = cuenta_cancaria;
+    }
+
+    public Byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Byte[] foto) {
+        this.foto = foto;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
