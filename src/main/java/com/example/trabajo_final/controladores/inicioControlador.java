@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class inicioControlador {
 
@@ -17,6 +18,6 @@ public class inicioControlador {
     public String index(Model model, HttpSession session){
 
         //model.addAttribute("title","Tarea 10- Inicio");
-        return "pruba"; //TODO: uso de los cambios
+        return "inicio"; //TODO: uso de los cambios
     }
 }
