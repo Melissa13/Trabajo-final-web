@@ -2,6 +2,7 @@ package com.example.trabajo_final.entidades;
 
 import com.example.trabajo_final.Tools.Enum.estadoCuenta;
 import com.example.trabajo_final.Tools.Enum.permisos;
+import org.apache.commons.codec.binary.Base64;
 
 public class usuario {
 
@@ -109,5 +110,22 @@ public class usuario {
 
     public void setFoto(Byte[] foto) {
         this.foto = foto;
+    }
+
+    public String mostrarFoto(){
+        if(this.foto == null)
+            return null;
+
+        byte[] imgBytesAsBase64 = Base64.encodeBase64(toPrimitives(this.foto));
+        return new String(imgBytesAsBase64);
+    }
+
+    private byte[] toPrimitives(Byte[] buffer) {
+
+        byte[] bytes = new byte[buffer.length];
+        for(int i = 0; i < buffer.length; i++){
+            bytes[i] = buffer[i];
+        }
+        return bytes;
     }
 }
