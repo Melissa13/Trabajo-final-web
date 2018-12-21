@@ -1,18 +1,27 @@
 package com.example.trabajo_final.entidades;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-public class factura {
+@Entity
+@Table(name = "facturas")
+public class factura implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @ManyToOne()
     private clientes cliente;
-    private Set<articulos> items;
+    @OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
+    private Set<articuloSolo> items;
+    @Temporal(TemporalType.DATE)
     private Date fecha_pedido;
     private double precio_total;
     private String estado;
 
-    public factura(long id, clientes cliente, Set<articulos> items, Date fecha_pedido, double precio_total, String estado) {
+    public factura(long id, clientes cliente, Set<articuloSolo> items, Date fecha_pedido, double precio_total, String estado) {
         this.id = id;
         this.cliente = cliente;
         this.items = items;
@@ -40,11 +49,11 @@ public class factura {
         this.cliente = cliente;
     }
 
-    public Set<articulos> getItems() {
+    public Set<articuloSolo> getItems() {
         return items;
     }
 
-    public void setItems(Set<articulos> items) {
+    public void setItems(Set<articuloSolo> items) {
         this.items = items;
     }
 

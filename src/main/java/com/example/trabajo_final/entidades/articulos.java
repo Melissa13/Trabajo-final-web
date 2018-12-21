@@ -1,7 +1,14 @@
 package com.example.trabajo_final.entidades;
 
-public class articulos {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+@Table(name = "articulos")
+public class articulos implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nombre;
     private String descripcion;

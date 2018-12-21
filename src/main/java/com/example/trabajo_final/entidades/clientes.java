@@ -1,12 +1,16 @@
 package com.example.trabajo_final.entidades;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+@Entity
+@Table(name = "clientesz")
+public class clientes implements Serializable{
 
-public class clientes {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long cedula;
     private String nombre;
