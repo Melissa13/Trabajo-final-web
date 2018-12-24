@@ -4,7 +4,16 @@ import com.example.trabajo_final.Tools.Enum.estadoCuenta;
 import com.example.trabajo_final.Tools.Enum.permisos;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "user")
 public class usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private String email;
     private String nombre;
@@ -13,11 +22,13 @@ public class usuario {
     private String pais;
     private String ciudad;
     private String password;
-    private permisos role;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<permisos> role;
     private estadoCuenta estado;
     private Byte[] foto;
 
-    public usuario(String email, String nombre, String apellido, String direccion, String pais, String ciudad, String password, permisos role) {
+    public usuario(String email, String nombre, String apellido, String direccion, String pais, String ciudad, String password, Set<permisos> role, Byte[] foto) {
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -26,10 +37,19 @@ public class usuario {
         this.ciudad = ciudad;
         this.password = password;
         this.role = role;
+        this.foto = foto;
         this.setEstado(estadoCuenta.SUSPENDIDO);
     }
 
     public usuario() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -88,11 +108,11 @@ public class usuario {
         this.password = password;
     }
 
-    public permisos getRole() {
+    public Set<permisos> getRole() {
         return role;
     }
 
-    public void setRole(permisos role) {
+    public void setRole(Set<permisos> role) {
         this.role = role;
     }
 
