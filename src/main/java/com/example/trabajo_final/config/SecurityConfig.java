@@ -1,6 +1,6 @@
 package com.example.trabajo_final.config;
 
-/*import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String usersQuery;
 
     @Value("${spring.queries.roles-query}")
-    private String rolesQuery;
+    private String rolesQuery;*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,4 +57,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .withUser("user").password("password").roles("ADMIN");
     }
 
-}*/
+}
