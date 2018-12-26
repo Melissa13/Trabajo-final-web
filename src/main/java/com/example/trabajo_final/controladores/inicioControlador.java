@@ -17,14 +17,14 @@ public class inicioControlador {
     @RequestMapping(value = "/", method=RequestMethod.GET)
     public String index(Model model, HttpSession session){
 
-        //model.addAttribute("title","Tarea 10- Inicio");
+        model.addAttribute("title","Web Final- Inicio");
         return "inicio"; //TODO: uso de los cambios
     }
 
     @RequestMapping(value = "/prueba", method=RequestMethod.GET)
     public String prueba(Model model, HttpSession session){
 
-        //model.addAttribute("title","Tarea 10- Inicio");
-        return "base"; //TODO: uso de los cambios
+        model.addAttribute("title","clientes");
+        return "clientes"; //TODO: uso de los cambios
     }
 }
