@@ -20,4 +20,11 @@ public class inicioControlador {
         //model.addAttribute("title","Tarea 10- Inicio");
         return "inicio"; //TODO: uso de los cambios
     }
+
+    @RequestMapping(value = "/prueba", method=RequestMethod.GET)
+    public String prueba(Model model, HttpSession session){
+
+        //model.addAttribute("title","Tarea 10- Inicio");
+        return "base"; //TODO: uso de los cambios
+    }
 }
