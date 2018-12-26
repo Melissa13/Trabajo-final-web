@@ -15,6 +15,7 @@ public class usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    private String username;
     private String email;
     private String nombre;
     private String apellido;
@@ -28,7 +29,8 @@ public class usuario {
     private estadoCuenta estado;
     private Byte[] foto;
 
-    public usuario(String email, String nombre, String apellido, String direccion, String pais, String ciudad, String password, Set<permisos> role, Byte[] foto) {
+    public usuario(String username, String email, String nombre, String apellido, String direccion, String pais, String ciudad, String password, Set<permisos> role) {
+        this.username = username;
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -37,7 +39,6 @@ public class usuario {
         this.ciudad = ciudad;
         this.password = password;
         this.role = role;
-        this.foto = foto;
         this.setEstado(estadoCuenta.SUSPENDIDO);
     }
 
@@ -50,6 +51,14 @@ public class usuario {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

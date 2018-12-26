@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,17 +14,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
+   /* @Autowired
     private DataSource dataSource;
 
     @Value("${spring.queries.users-query}")
     private String usersQuery;
 
     @Value("${spring.queries.roles-query}")
-    private String rolesQuery;
+    private String rolesQuery;*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,15 +37,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .loginPage("/login").failureUrl("/login-error")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                     .permitAll().and().logout()
                     .logoutSuccessUrl("/login");
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER");
+                    .withUser("user").password("password").roles("ADMIN");
     }
 
 }
