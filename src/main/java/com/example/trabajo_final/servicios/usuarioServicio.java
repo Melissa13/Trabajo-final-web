@@ -6,7 +6,7 @@ import com.example.trabajo_final.repositorios.permisoRepository;
 import com.example.trabajo_final.entidades.*;
 import com.example.trabajo_final.Tools.Enum.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.trabajo_final.config.Encoder;
 
@@ -19,11 +19,11 @@ public class usuarioServicio {
     private usuarioRepositorio uRepo;
     private permisoRepository pRepo;
 
-    @Autowired
-    public usuarioServicio(usuarioRepositorio uRepo, permisoRepository pRepo) {
-        this.uRepo = uRepo;
-        this.pRepo = pRepo;
-    }
+    //@Autowired
+    //public usuarioServicio(usuarioRepositorio uRepo, permisoRepository pRepo) {
+    //    this.uRepo = uRepo;
+    //    this.pRepo = pRepo;
+    //}
 
     public usuario finUserByEmail(String email)
     {
