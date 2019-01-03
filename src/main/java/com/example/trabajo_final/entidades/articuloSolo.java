@@ -14,12 +14,12 @@ public class articuloSolo implements Serializable {
     private articulos asociado;
     private long cantidad;
     @ManyToOne()
-    private factura orden_factura;
+    private Factura orden_factura;
 
     public articuloSolo() {
     }
 
-    public articuloSolo(articulos asociado, long cantidad, factura orden_factura) {
+    public articuloSolo(articulos asociado, long cantidad, Factura orden_factura) {
         this.asociado = asociado;
         this.cantidad = cantidad;
         this.orden_factura = orden_factura;
@@ -49,11 +49,11 @@ public class articuloSolo implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public factura getOrden_factura() {
+    public Factura getOrden_factura() {
         return orden_factura;
     }
 
-    public void setOrden_factura(factura orden_factura) {
+    public void setOrden_factura(Factura orden_factura) {
         this.orden_factura = orden_factura;
     }
 }

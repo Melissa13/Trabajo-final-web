@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "facturas")
-public class factura implements Serializable {
+public class Factura implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class factura implements Serializable {
     private double precio_total;
     private String estado;
 
-    public factura(long id, clientes cliente, Set<articuloSolo> items, Date fecha_pedido, double precio_total, String estado) {
+    public Factura(long id, clientes cliente, Set<articuloSolo> items, Date fecha_pedido, double precio_total, String estado) {
         this.id = id;
         this.cliente = cliente;
         this.items = items;
@@ -30,7 +30,7 @@ public class factura implements Serializable {
         this.estado = estado;
     }
 
-    public factura() {
+    public Factura() {
     }
 
     public long getId() {
