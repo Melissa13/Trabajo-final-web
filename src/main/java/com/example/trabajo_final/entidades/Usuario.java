@@ -18,46 +18,36 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
-    private long cedula;
+    private String email;
     @NotNull
     private String nombre;
     @NotNull
     private String apellido;
     @NotNull
-    private String username;
-    @NotNull
-    private String password;
-    private Date birth_date;
-    private String genero;
-    @NotNull
     @Column(length = 1000)
     private String direccion_envio;
-    private Long cuenta_cancaria;
-    private Byte[] foto;
-    private String ciudad;
-    private String pais;
-    private String email;
-    private estadoCuenta estado;
     @NotNull
-    private Rol rol;
+    private String pais;
+    @NotNull
+    private String ciudad;    
+    @NotNull
+    private String password;
+    @NotNull 
+    Rol role;
+    @NotNull
+    private estadoCuenta estado;
+    private Byte[] foto;
 
-    public Usuario(long id, long cedula, String nombre, String apellido, String username, String password, Date birth_date, String genero, String direccion_envio, Long cuenta_cancaria, Byte[] foto, String ciudad, String pais, String email, Rol rol){
-        this.id = id;
-        this.cedula = cedula;
+    public Usuario(String email, String nombre, String apellido, String direccion_envio, String pais, String ciudad, String password, Rol role) {
+        this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.username = username;
-        this.password = password;
-        this.birth_date = birth_date;
-        this.genero = genero;
         this.direccion_envio = direccion_envio;
-        this.cuenta_cancaria = cuenta_cancaria;
-        this.foto = foto;
-        this.ciudad = ciudad;
         this.pais = pais;
-        this.email = email;
-        this.estado=estadoCuenta.SUSPENDIDO;
-        this.rol=rol;
+        this.ciudad = ciudad;
+        this.password = password;
+        this.role = role;
+        this.setEstado(estadoCuenta.SUSPENDIDO);
     }
 
     public Usuario() {
@@ -71,13 +61,6 @@ public class Usuario {
         this.id = id;
     }
 
-    public long getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(long cedula) {
-        this.cedula = cedula;
-    }
 
     public String getNombre() {
         return nombre;
@@ -95,14 +78,6 @@ public class Usuario {
         this.apellido = apellido;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -111,36 +86,12 @@ public class Usuario {
         this.password = password;
     }
 
-    public Date getBirth_date() {
-        return birth_date;
-    }
-
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
     public String getDireccion_envio() {
         return direccion_envio;
     }
 
     public void setDireccion_envio(String direccion_envio) {
         this.direccion_envio = direccion_envio;
-    }
-
-    public Long getCuenta_cancaria() {
-        return cuenta_cancaria;
-    }
-
-    public void setCuenta_cancaria(Long cuenta_cancaria) {
-        this.cuenta_cancaria = cuenta_cancaria;
     }
 
     public Byte[] getFoto() {
