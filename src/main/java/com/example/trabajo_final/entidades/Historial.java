@@ -2,58 +2,75 @@ package com.example.trabajo_final.entidades;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "historial")
 public class Historial implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @OneToOne()
-    private articulos asociado;
-    private long cantidad;
-    @ManyToOne()
-    private Factura orden_factura;
+    @GeneratedValue
+    private Integer historyId;
+    @OneToOne
+    private Usuario user;
+    @ManyToMany
+    private Set<Articulo> browsingHistory;
+    private ArrayList<Integer> amount;
+    @ManyToMany
+    private Set<Articulo> shoppingCart;
 
-    public Historial() {
+    // Constructors
+    public Historial(){
+
     }
 
-    public Historial(articulos asociado, long cantidad, Factura orden_factura) {
-        this.asociado = asociado;
-        this.cantidad = cantidad;
-        this.orden_factura = orden_factura;
+    public Historial(Usuario user) {
+        this.setUser(user);
+        this.setBrowsingHistory(new HashSet<>());
+        this.setShoppingCart(new HashSet<>());
+        this.setAmount(new ArrayList<>());
     }
 
-    public long getId() {
-        return id;
+    // Getters and Setters
+    public Integer getHistoryId() {
+        return historyId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setHistoryId(Integer historyId) {
+        this.historyId = historyId;
     }
 
-    public articulos getAsociado() {
-        return asociado;
+    public Usuario getUser() {
+        return user;
     }
 
-    public void setAsociado(articulos asociado) {
-        this.asociado = asociado;
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 
-    public long getCantidad() {
-        return cantidad;
+    public Set<Articulo> getBrowsingHistory() {
+        return browsingHistory;
     }
 
-    public void setCantidad(long cantidad) {
-        this.cantidad = cantidad;
+    public void setBrowsingHistory(Set<Articulo> browsingHistory) {
+        this.browsingHistory = browsingHistory;
     }
 
-    public Factura getOrden_factura() {
-        return orden_factura;
+    public Set<Articulo> getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setOrden_factura(Factura orden_factura) {
-        this.orden_factura = orden_factura;
+    public void setShoppingCart(Set<Articulo> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public ArrayList<Integer> getAmount() {
+        return amount;
+    }
+
+    public void setAmount(ArrayList<Integer> amount) {
+        this.amount = amount;
     }
 }
