@@ -1,35 +1,47 @@
 package com.example.trabajo_final.entidades;
 
+import com.example.trabajo_final.Tools.Enum.Rol;
 import com.example.trabajo_final.Tools.Enum.estadoCuenta;
-import com.example.trabajo_final.Tools.Enum.permisos;
+//import com.example.trabajo_final.Tools.Enum.permisos;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotNull
     private long cedula;
+    @NotNull
     private String nombre;
+    @NotNull
     private String apellido;
+    @NotNull
     private String username;
+    @NotNull
     private String password;
     private Date birth_date;
     private String genero;
+    @NotNull
+    @Column(length = 1000)
     private String direccion_envio;
     private Long cuenta_cancaria;
     private Byte[] foto;
     private String ciudad;
     private String pais;
     private String email;
+    private estadoCuenta estado;
+    @NotNull
+    private Rol rol;
 
-    public Usuario(long id, long cedula, String nombre, String apellido, String username, String password, Date birth_date, String genero, String direccion_envio, Long cuenta_cancaria, Byte[] foto, String ciudad, String pais, String email) {
+    public Usuario(long id, long cedula, String nombre, String apellido, String username, String password, Date birth_date, String genero, String direccion_envio, Long cuenta_cancaria, Byte[] foto, String ciudad, String pais, String email, Rol rol){
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
@@ -44,6 +56,8 @@ public class Usuario {
         this.ciudad = ciudad;
         this.pais = pais;
         this.email = email;
+        this.estado=estadoCuenta.SUSPENDIDO;
+        this.rol=rol;
     }
 
     public Usuario() {
@@ -137,6 +151,24 @@ public class Usuario {
         this.foto = foto;
     }
 
+    public String mostrar(){
+        if(this.foto == null)
+            return null;
+
+        byte[] BytesAsBase64 = org.apache.tomcat.util.codec.binary.Base64.encodeBase64(auxiliar(this.foto));
+        return new String(BytesAsBase64);
+    }
+
+    // Auxiliary Function
+    private byte[] auxiliar(Byte[] buffer) {
+
+        byte[] bytes = new byte[buffer.length];
+        for(int i = 0; i < buffer.length; i++){
+            bytes[i] = buffer[i];
+        }
+        return bytes;
+    }
+
     public String getCiudad() {
         return ciudad;
     }
@@ -159,5 +191,13 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public estadoCuenta getEstado() {
+        return estado;
+    }
+
+    public void setEstado(estadoCuenta estado) {
+        this.estado = estado;
     }
 }
