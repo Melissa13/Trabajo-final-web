@@ -9,7 +9,7 @@ public class Articulo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String nombre;
     private String descripcion;
     private String supplidor;
@@ -20,7 +20,7 @@ public class Articulo implements Serializable {
     public Articulo() {
     }
 
-    public Articulo(long id, String nombre, String descripcion, String supplidor, double precio, long cantidad, Byte[] foto_producto) {
+    public Articulo(int id, String nombre, String descripcion, String supplidor, double precio, long cantidad, Byte[] foto_producto) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -30,11 +30,11 @@ public class Articulo implements Serializable {
         this.foto_producto = foto_producto;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

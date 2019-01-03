@@ -16,7 +16,7 @@ public class Factura implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     @ManyToOne()
     private Usuario usuario;
     @OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
@@ -41,11 +41,11 @@ public class Factura implements Serializable {
     public Factura() {
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
