@@ -51,7 +51,7 @@ public class ServicioLectura {
     public Usuario findRegisteredUserAccount(String email) { return usuarioRepositorio.findByEmail(email); } // Used for profiles
 
     public boolean findRegisteredUserAccount(String email, String password) {
-        Usuario usuario = usuarioRepositorio.findUserAccountWithUsernameAndPassword(email, ServicioEncryt.encryptPassword(password));
+        Usuario usuario = usuarioRepositorio.findUserAccountWithUsernameAndPassword(email, servicioEncryt.encryptPassword(password));
         return (usuario != null);
     }
 
