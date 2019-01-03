@@ -12,7 +12,7 @@ public class Historial implements Serializable {
 
     @Id
     @GeneratedValue
-    private Integer historyId;
+    private Integer histid;
     @OneToOne
     private Usuario user;
     @ManyToMany
@@ -21,7 +21,6 @@ public class Historial implements Serializable {
     @ManyToMany
     private Set<Articulo> shoppingCart;
 
-    // Constructors
     public Historial(){
 
     }
@@ -35,11 +34,11 @@ public class Historial implements Serializable {
 
     // Getters and Setters
     public Integer getHistoryId() {
-        return historyId;
+        return histid;
     }
 
     public void setHistoryId(Integer historyId) {
-        this.historyId = historyId;
+        this.histid = historyId;
     }
 
     public Usuario getUser() {

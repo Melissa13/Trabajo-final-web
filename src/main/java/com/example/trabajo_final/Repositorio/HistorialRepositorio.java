@@ -9,7 +9,7 @@ public interface HistorialRepositorio extends JpaRepository<Historial, Integer> 
 
     Historial findByHistoryId(Integer historyId);
 
-    @Query("select h from History h where h.user.email = :email")
+    @Query("select h from Historial h where h.user.email = :email")
     Historial findByUser(@Param("email") String email);
 
 }

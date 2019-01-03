@@ -12,12 +12,12 @@ public interface ArticuloRepositorio extends JpaRepository<Articulo, Integer> {
     Articulo findByArtId(Integer productId);
 
     @Query("select p from Articulo p where p.nombre = :nombre")
-    List<Articulo> findByName(@Param("name") String productName);
+    List<Articulo> findByName(@Param("suplidor") String productName);
 
-    @Query("select p from Articulo p where p.supplier = :supplier")
-    List<Articulo> findBySupplidor(@Param("supplier") String supplier);
+    @Query("select p from Articulo p where p.suplidor = :suplidor")
+    List<Articulo> findBySupplidor(@Param("suplidor") String supplier);
 
-    @Query("select p from Product p where p.productPrice between :low and :high")
+    @Query("select p from Articulo p where p.precio between :low and :high")
     List<Articulo> findByPriceRange(@Param("low") Float minPrice, @Param("high") Float maxPrice);
 
 }
