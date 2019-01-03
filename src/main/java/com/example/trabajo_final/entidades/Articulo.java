@@ -13,21 +13,19 @@ public class Articulo implements Serializable {
     private String nombre;
     private String descripcion;
     private String supplidor;
-    private double precio;
-    private long cantidad;
+    private float precio;
+    private Integer cantidad;
     private Byte[] foto_producto;
 
     public Articulo() {
     }
 
-    public Articulo(int id, String nombre, String descripcion, String supplidor, double precio, long cantidad, Byte[] foto_producto) {
-        this.id = id;
+    public Articulo(String nombre, String descripcion, String supplidor, float precio, Integer cantidad) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.supplidor = supplidor;
         this.precio = precio;
         this.cantidad = cantidad;
-        this.foto_producto = foto_producto;
     }
 
     public int getId() {
@@ -60,11 +58,11 @@ public class Articulo implements Serializable {
 
     public double getPrecio() { return precio; }
 
-    public void setPrecio(double precio) { this.precio = precio; }
+    public void setPrecio(float precio) { this.precio = precio; }
 
     public long getCantidad() { return cantidad; }
 
-    public void setCantidad(long cantidad) { this.cantidad = cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
 
     public Byte[] getFoto_producto() { return foto_producto; }
 
