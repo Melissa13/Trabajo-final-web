@@ -5,6 +5,12 @@ import com.example.trabajo_final.Servicios.Basicos.ServicioCreacion;
 import com.example.trabajo_final.Servicios.Basicos.ServicioEliminar;
 import com.example.trabajo_final.Servicios.Basicos.ServicioLectura;
 import com.example.trabajo_final.Servicios.Complementarias.ServicioEstadisticas;
+import com.example.trabajo_final.Tools.Enum.EstadoEnvio;
+import com.example.trabajo_final.Tools.Enum.Rol;
+import com.example.trabajo_final.Tools.Enum.estadoCuenta;
+import com.example.trabajo_final.entidades.Articulo;
+import com.example.trabajo_final.entidades.Factura;
+import com.example.trabajo_final.entidades.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -43,13 +49,13 @@ public class AdminControlador implements ErrorController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().get != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userRole", RDS.getCurrentLoggedUser().getRole());
         model.addAttribute("user", RDS.getSessionAttr("user"));
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             model.addAttribute("isAdmin", false);
         else
             model.addAttribute("isAdmin", true);
@@ -63,7 +69,7 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
@@ -77,7 +83,7 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userID", productId);
@@ -91,7 +97,7 @@ public class AdminControlador implements ErrorController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userList", RDS.findAllRegisteredAccounts());
@@ -105,7 +111,7 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
@@ -119,7 +125,7 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("productsView", SS.productViewStatistics());
@@ -138,17 +144,17 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login";
 
-        Permission per;
+        Rol per;
         if (role.equals("ADMIN"))
         {
-            per = Permission.ADMIN;
+            per = Rol.ADMIN;
         }
         else
         {
-            per = Permission.CONSUMER;
+            per = Rol.CONSUMER;
         }
 
         try {
@@ -179,12 +185,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            Product p = new Product(productName,supplier,productDescription,productPrice,productInStock);
-            p.setPhoto(processImageFile(picture.getBytes()));
+            Articulo p = new Articulo(productName,supplier,productDescription,productPrice,productInStock);
+            p.setFoto_producto(processImageFile(picture.getBytes()));
             CDS.registerNewProduct(p);
 
             return "redirect:/admin/inventory";
@@ -201,23 +207,23 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            Product product = RDS.findRegisteredProduct(productId);
+            Articulo product = RDS.findRegisteredProduct(productId);
 
             if (!productName.equals(""))
-                product.setProductName(productName);
+                product.setNombre(productName);
 
             if (!supplier.equals(""))
-                product.setSupplier(supplier);
+                product.setSupplidor(supplier);
 
             if (!productDescription.equals(""))
-                product.setProductDescription(productDescription);
+                product.setDescripcion(productDescription);
 
-            if (!productPrice.equals(product.getProductPrice()))
-                product.setProductPrice(productPrice);
+            if (!productPrice.equals(product.getPrecio()))
+                product.setPrecio(productPrice);
 
             UDS.updateRegisteredProduct(product);
 
@@ -235,7 +241,7 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login";
 
         try {
@@ -254,12 +260,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            Product product = RDS.findRegisteredProduct(productId);
-            product.setProductInStock(product.getProductInStock() + addition); // Addition can be positive or negative
+            Articulo product = RDS.findRegisteredProduct(productId);
+            product.setCantidad(product.getCantidad() + addition); // Addition can be positive or negative
             UDS.updateRegisteredProduct(product);
 
             return "redirect:/admin/inventory";
@@ -276,12 +282,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
-            receipt.setStatus(OrderStatus.DELIVERED);
+            Factura receipt = RDS.findRegisteredTransaction(fiscalCode);
+            receipt.setEstado(EstadoEnvio.ENTREGADO);
             UDS.updateRegisteredUserTransaction(receipt);
 
             // TODO: send email to client
@@ -301,12 +307,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            Product product = RDS.findRegisteredProduct(productId);
-            product.setPhoto(processImageFile(picture.getBytes()));
+            Articulo product = RDS.findRegisteredProduct(productId);
+            product.setFoto_producto(processImageFile(picture.getBytes()));
             UDS.updateRegisteredProduct(product);
 
             return "redirect:/admin/inventory";
@@ -325,12 +331,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            User user = RDS.findRegisteredUserAccount(email);
-            user.setStatus(AccountStatus.SUSPENDED);
+            Usuario user = RDS.findRegisteredUserAccount(email);
+            user.setEstado(estadoCuenta.SUSPENDIDO);
             UDS.updateRegisteredUserAccount(user);
 
             return "redirect:/admin/users";
@@ -347,16 +353,16 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            User user = RDS.findRegisteredUserAccount(email);
+            Usuario user = RDS.findRegisteredUserAccount(email);
 
-            if (user.getRole() != Permission.CONSUMER)
+            if (user.getRole() != Rol.CONSUMER)
                 return "redirect:/admin/users"; // TODO: only individuals can be made admin
 
-            user.setRole(Permission.ADMIN);
+            user.setRole(Rol.ADMIN);
             UDS.updateRegisteredUserAccount(user);
 
             return "redirect:/admin/users";
@@ -373,12 +379,12 @@ public class AdminControlador implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+        if (RDS.getCurrentLoggedUser().getRole() != Rol.ADMIN)
             return "redirect:/login"; // User must be an admin
 
         try {
-            User user = RDS.findRegisteredUserAccount(email);
-            user.setRole(Permission.CONSUMER);
+            Usuario user = RDS.findRegisteredUserAccount(email);
+            user.setRole(Rol.CONSUMER);
             UDS.updateRegisteredUserAccount(user);
 
             return "redirect:/admin/users";

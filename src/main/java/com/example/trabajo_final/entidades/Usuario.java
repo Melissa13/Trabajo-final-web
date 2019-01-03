@@ -151,4 +151,12 @@ public class Usuario {
     public void setEstado(estadoCuenta estado) {
         this.estado = estado;
     }
+
+    public Rol getRole() {
+        return role;
+    }
+
+    public void setRole(Rol role) {
+        this.role = role;
+    }
 }
