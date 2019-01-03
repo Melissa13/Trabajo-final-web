@@ -4,6 +4,9 @@ import com.example.trabajo_final.Repositorio.ArticuloRepositorio;
 import com.example.trabajo_final.Repositorio.FacturaRepositorio;
 import com.example.trabajo_final.Repositorio.HistorialRepositorio;
 import com.example.trabajo_final.Repositorio.UsuarioRepositorio;
+import com.example.trabajo_final.Servicios.Complementarias.ServicioEncryt;
+import com.example.trabajo_final.Tools.Enum.EstadoEnvio;
+import com.example.trabajo_final.Tools.Enum.estadoCuenta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.trabajo_final.entidades.*;
@@ -25,7 +28,7 @@ public class ServicioLectura {
     @Autowired
     private HttpSession session;
     @Autowired
-    private EncryptionService EncriptService;
+    private ServicioEncryt servicioEncryt;
 
 
     public Object getSessionAttr(String name)
@@ -39,58 +42,58 @@ public class ServicioLectura {
     }
 
     // Single Search
-    public History findRegisteredUserHistory(String email) { return historyRepository.findByUser(email); }
+    public Historial findRegisteredUserHistory(String email) { return historialRepositorio.findByUser(email); }
 
-    public Product findRegisteredProduct(Integer productId) { return productRepository.findByProductId(productId); }
+    public Articulo findRegisteredProduct(Integer productId) { return articuloRepositorio.findByArtId(productId); }
 
-    public Receipt findRegisteredTransaction(String fiscalCode) { return receiptRepository.findByFiscalCode(fiscalCode); }
+    public Factura findRegisteredTransaction(String fiscalCode) { return facturaRepositorio.findByFiscalCode(fiscalCode); }
 
-    public User findRegisteredUserAccount(String email) { return userRepository.findByEmail(email); } // Used for profiles
+    public Usuario findRegisteredUserAccount(String email) { return usuarioRepositorio.findByEmail(email); } // Used for profiles
 
     public boolean findRegisteredUserAccount(String email, String password) {
-        User user = userRepository.findUserAccountWithUsernameAndPassword(email, EncriptService.encryptPassword(password));
-        return (user != null);
+        Usuario usuario = usuarioRepositorio.findUserAccountWithUsernameAndPassword(email, ServicioEncryt.encryptPassword(password));
+        return (usuario != null);
     }
 
     // Complete Search
-    public List<Product> findAllRegisteredProducts() { return productRepository.findAll(); }
+    public List<Articulo> findAllRegisteredProducts() { return articuloRepositorio.findAll(); }
 
-    public List<Receipt> findAllRegisteredTransactions() { return receiptRepository.findAll(); }
+    public List<Factura> findAllRegisteredTransactions() { return facturaRepositorio.findAll(); }
 
-    public List<User> findAllRegisteredAccounts() { return userRepository.findAll(); }
+    public List<Usuario> findAllRegisteredAccounts() { return usuarioRepositorio.findAll(); }
 
     // Specific Search
-    public List<Product> findRegisteredProductsWithName(String name) { return productRepository.findByName(name); }
+    public List<Articulo> findRegisteredProductsWithName(String name) { return articuloRepositorio.findByName(name); }
 
-    public List<Product> findRegisteredProductsFromSupplier(String supplier) { return productRepository.findBySupplier(supplier); }
+    public List<Articulo> findRegisteredProductsFromSupplier(String supplier) { return articuloRepositorio.findBySupplidor(supplier); }
 
-    public List<Product> findRegisteredProductsByPriceRange(Float minPrice, Float maxPrice){
+    public List<Articulo> findRegisteredProductsByPriceRange(Float minPrice, Float maxPrice){
 
         if (minPrice < 0.00f || maxPrice < 0.00f)
             throw new IllegalArgumentException("Price range must be in the positive");
 
         if (minPrice < maxPrice)
-            return productRepository.findByPriceRange(minPrice, maxPrice);
+            return articuloRepositorio.findByPriceRange(minPrice, maxPrice);
         else
-            return productRepository.findByPriceRange(maxPrice, minPrice);
+            return articuloRepositorio.findByPriceRange(maxPrice, minPrice);
     }
 
-    public List<Receipt> findRegisteredUserTransactions(String email) {
+    public List<Factura> findRegisteredUserTransactions(String email) {
 
         if (!isEmailAddressTaken(email))
             throw new IllegalArgumentException("This user account does not exist");
 
-        return receiptRepository.findByUser(email);
+        return facturaRepositorio.findByUser(email);
     }
 
-    public List<Receipt> findRegisteredTransactionByStatus(OrderStatus status) { return receiptRepository.findByOrderStatus(status); }
+    public List<Factura> findRegisteredTransactionByStatus(EstadoEnvio status) { return facturaRepositorio.findByOrderStatus(status); }
 
-    public List<User> findRegisteredAccountsByStatus(AccountStatus status) { return userRepository.findByAccountStatus(status); }
+    public List<Usuario> findRegisteredAccountsByStatus(estadoCuenta status) { return usuarioRepositorio.findByAccountStatus(status); }
     // TODO: Add specific searches as the need comes
 
     // Auxiliary Functions
     private boolean isEmailAddressTaken(String email){
-        User user = userRepository.findByEmail(email);
+        Usuario user = usuarioRepositorio.findByEmail(email);
         return (user != null);
     }
 
@@ -103,13 +106,13 @@ public class ServicioLectura {
         session.invalidate();
     }
 
-    public User getCurrentLoggedUser()
+    public Usuario getCurrentLoggedUser()
     {
-        return (User)session.getAttribute("user");
+        return (Usuario) session.getAttribute("user");
     }
 
     // User Queries
-    public User findUserInformation(String email) { return userRepository.findByEmail(email); }
+    public Usuario findUserInformation(String email) { return usuarioRepositorio.findByEmail(email); }
 
 
 }
