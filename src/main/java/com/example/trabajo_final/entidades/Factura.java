@@ -1,9 +1,14 @@
 package com.example.trabajo_final.entidades;
 
+import com.example.trabajo_final.Tools.Enum.EstadoEnvio;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
+import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name = "facturas")
@@ -13,21 +18,24 @@ public class Factura implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne()
-    private clientes cliente;
-    @OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
-    private Set<Historial> items;
-    @Temporal(TemporalType.DATE)
-    private Date fecha_pedido;
-    private double precio_total;
-    private String estado;
+    private Usuario usuario;
+    //@OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
+    //private Set<Historial> items;
+    private ArrayList<Integer> monto;
+    private ArrayList<Integer> articulosL;
+    private Timestamp fecha_pedido;
+    private Float precio_total;
+    private EstadoEnvio estado;
+    private String codigoF;
 
-    public Factura(long id, clientes cliente, Set<Historial> items, Date fecha_pedido, double precio_total, String estado) {
-        this.id = id;
-        this.cliente = cliente;
-        this.items = items;
+    public Factura(Usuario usuario, ArrayList<Integer> monto, ArrayList<Integer> articulosL, Timestamp fecha_pedido, Float precio_total) {
+        this.usuario = usuario;
+        this.monto = monto;
+        this.articulosL = articulosL;
         this.fecha_pedido = fecha_pedido;
         this.precio_total = precio_total;
-        this.estado = estado;
+        this.estado = EstadoEnvio.PENDIENTE;
+        this.codigoF= UUID.randomUUID().toString().split("-")[0].toUpperCase();
     }
 
     public Factura() {
@@ -41,31 +49,59 @@ public class Factura implements Serializable {
         this.id = id;
     }
 
-    public clientes getCliente() {
-        return cliente;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCliente(clientes cliente) {
-        this.cliente = cliente;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Set<Historial> getItems() {
-        return items;
+    public ArrayList<Integer> getMonto() {
+        return monto;
     }
 
-    public void setItems(Set<Historial> items) {
-        this.items = items;
+    public void setMonto(ArrayList<Integer> monto) {
+        this.monto = monto;
     }
 
-    public Date getFecha_pedido() {  return fecha_pedido; }
+    public ArrayList<Integer> getArticulosL() {
+        return articulosL;
+    }
 
-    public void setFecha_pedido(Date fecha_pedido) {  this.fecha_pedido = fecha_pedido;  }
+    public void setArticulosL(ArrayList<Integer> articulosL) {
+        this.articulosL = articulosL;
+    }
 
-    public double getPrecio_total() {  return precio_total;  }
+    public Timestamp getFecha_pedido() {
+        return fecha_pedido;
+    }
 
-    public void setPrecio_total(double precio_total) {  this.precio_total = precio_total;  }
+    public void setFecha_pedido(Timestamp fecha_pedido) {
+        this.fecha_pedido = fecha_pedido;
+    }
 
-    public String getEstado() {  return estado;  }
+    public Float getPrecio_total() {
+        return precio_total;
+    }
 
-    public void setEstado(String estado) {  this.estado = estado;  }
+    public void setPrecio_total(Float precio_total) {
+        this.precio_total = precio_total;
+    }
+
+    public EstadoEnvio getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoEnvio estado) {
+        this.estado = estado;
+    }
+
+    public String getCodigoF() {
+        return codigoF;
+    }
+
+    public void setCodigoF(String codigoF) {
+        this.codigoF = codigoF;
+    }
 }
