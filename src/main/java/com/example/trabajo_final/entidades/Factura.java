@@ -15,13 +15,13 @@ public class Factura implements Serializable {
     @ManyToOne()
     private clientes cliente;
     @OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
-    private Set<articuloSolo> items;
+    private Set<Historial> items;
     @Temporal(TemporalType.DATE)
     private Date fecha_pedido;
     private double precio_total;
     private String estado;
 
-    public Factura(long id, clientes cliente, Set<articuloSolo> items, Date fecha_pedido, double precio_total, String estado) {
+    public Factura(long id, clientes cliente, Set<Historial> items, Date fecha_pedido, double precio_total, String estado) {
         this.id = id;
         this.cliente = cliente;
         this.items = items;
@@ -49,11 +49,11 @@ public class Factura implements Serializable {
         this.cliente = cliente;
     }
 
-    public Set<articuloSolo> getItems() {
+    public Set<Historial> getItems() {
         return items;
     }
 
-    public void setItems(Set<articuloSolo> items) {
+    public void setItems(Set<Historial> items) {
         this.items = items;
     }
 

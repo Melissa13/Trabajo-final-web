@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "articulo_solo")
-public class articuloSolo implements Serializable {
+@Table(name = "historial")
+public class Historial implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class articuloSolo implements Serializable {
     @ManyToOne()
     private Factura orden_factura;
 
-    public articuloSolo() {
+    public Historial() {
     }
 
-    public articuloSolo(articulos asociado, long cantidad, Factura orden_factura) {
+    public Historial(articulos asociado, long cantidad, Factura orden_factura) {
         this.asociado = asociado;
         this.cantidad = cantidad;
         this.orden_factura = orden_factura;
