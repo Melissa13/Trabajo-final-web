@@ -19,8 +19,8 @@ public class Factura implements Serializable {
     private long id;
     @ManyToOne()
     private Usuario usuario;
-    //@OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
-    //private Set<Historial> items;
+    @OneToMany(mappedBy = "orden_factura", fetch = FetchType.EAGER)
+    private Set<Historial> items;
     private ArrayList<Integer> monto;
     private ArrayList<Integer> articulosL;
     private Timestamp fecha_pedido;
