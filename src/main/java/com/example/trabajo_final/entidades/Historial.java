@@ -32,7 +32,6 @@ public class Historial implements Serializable {
         this.setAmount(new ArrayList<>());
     }
 
-    // Getters and Setters
     public Integer getHistoryId() {
         return histid;
     }
