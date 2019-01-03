@@ -20,4 +20,6 @@ public interface FacturaRepositorio extends JpaRepository<Factura, Long> {
 
     @Query("select r from Factura r where r.transactionDate between :beginning and :ending")
     List<Factura> findByTimestamp(@Param("beginning") Timestamp start, @Param("ending") Timestamp end);
+
+    void delete(String fiscalCode);
 }
