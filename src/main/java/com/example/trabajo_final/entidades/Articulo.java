@@ -10,7 +10,7 @@ public class Articulo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String nombre;
     private String descripcion;
     private String supplidor;
@@ -29,7 +29,7 @@ public class Articulo implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

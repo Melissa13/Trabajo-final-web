@@ -4,6 +4,7 @@ import com.example.trabajo_final.Servicios.Basicos.ServicioActualizacion;
 import com.example.trabajo_final.Servicios.Basicos.ServicioCreacion;
 import com.example.trabajo_final.Servicios.Basicos.ServicioEliminar;
 import com.example.trabajo_final.Servicios.Basicos.ServicioLectura;
+import com.example.trabajo_final.Tools.Enum.EstadoEnvio;
 import com.example.trabajo_final.Tools.Enum.estadoCuenta;
 import com.example.trabajo_final.entidades.Articulo;
 import com.example.trabajo_final.entidades.Factura;
@@ -63,8 +64,8 @@ public class AccesoControlador {
         if(!SL.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        model.addAttribute("browsingHistorial", SL.findRegisteredUserHistorial(SL.getCurrentLoggedUser().getEmail()).getBrowsingHistorial());
-        model.addAttribute("shoppingCart", SL.findRegisteredUserHistorial(SL.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        model.addAttribute("browsingHistorial", SL.findRegisteredUserHistory(SL.getCurrentLoggedUser().getEmail()).getBrowsingHistory());
+        model.addAttribute("shoppingCart", SL.findRegisteredUserHistory(SL.getCurrentLoggedUser().getEmail()).getShoppingCart());
         model.addAttribute("transactions", SL.findRegisteredUserTransactions(SL.getCurrentLoggedUser().getEmail()));
 
         return new ModelAndView("");
@@ -81,7 +82,7 @@ public class AccesoControlador {
         return new ModelAndView("");
     }
 
-
+/*
     @GetMapping("/download_pdf/transaction")
     @ResponseBody
     public void downloadTransaction(@RequestParam("fiscalCode") String fiscalCode, HttpServletResponse response) throws JRException, IOException {
@@ -103,7 +104,7 @@ public class AccesoControlador {
 
             JRDataSource data = new JRMapArrayDataSource(fetchTransactionDataSource());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, data/*new JREmptyDataSource()*/);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, data);
 
             response.setContentType("application/x-pdf");
             response.setHeader("Content-disposition", "inline; filename=Transaction_Report_" + fiscalCode + ".pdf");
@@ -114,7 +115,7 @@ public class AccesoControlador {
             System.out.println(exp.getMessage());
         }
     }
-
+*/
     @PostMapping("/userLogin")
     public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("origin") String origin){
 
@@ -268,7 +269,7 @@ public class AccesoControlador {
             return "redirect:/login";
 
         try {
-            Historial history = SL.findRegisteredUserHistorial(SL.getCurrentLoggedUser().getEmail());
+            Historial history = SL.findRegisteredUserHistory(SL.getCurrentLoggedUser().getEmail());
             Set<Articulo> shoppingCart = history.getShoppingCart();
             ArrayList<Integer> amount = history.getAmount();
 
@@ -284,7 +285,7 @@ public class AccesoControlador {
 
                     // Updating inventory
                     product.setCantidad(product.getCantidad() - amount.get(count++));
-                    SA.updateRegisteredArticulo(product);
+                    SA.updateRegisteredProduct(product);
                 }
             }
 
@@ -311,14 +312,14 @@ public class AccesoControlador {
             return "redirect:/login";
 
         try {
-            Historial history = SL.findRegisteredUserHistorial(SL.getCurrentLoggedUser().getEmail());
+            Historial history = SL.findRegisteredUserHistory(SL.getCurrentLoggedUser().getEmail());
             Set<Articulo> shoppingCart = history.getShoppingCart();
             ArrayList<Integer> amount = history.getAmount();
-            Articulo product = SL.findRegisteredArticulo(productId);
+            Articulo product = SL.findRegisteredProduct(productId);
 
             int count = 0;
             for (Articulo p: shoppingCart)
-                if (p.getArticuloId().equals(productId))
+                if (p.getId().equals(productId))
                     break;
                 else
                     count++;
@@ -327,7 +328,7 @@ public class AccesoControlador {
             shoppingCart.remove(product);
             history.setShoppingCart(shoppingCart);
 
-            UDS.updateRegisteredUserHistorial(history);
+            SA.updateRegisteredUserHistory(history);
 
             return "redirect:/myHistorial";
         } catch (Exception exp){
@@ -344,9 +345,9 @@ public class AccesoControlador {
             return "redirect:/login";
 
         try {
-            Historial history = SL.findRegisteredUserHistorial(SL.getCurrentLoggedUser().getEmail());
+            Historial history = SL.findRegisteredUserHistory(SL.getCurrentLoggedUser().getEmail());
             history.setShoppingCart(new HashSet<>());
-            UDS.updateRegisteredUserHistorial(history);
+            SA.updateRegisteredUserHistory(history);
 
             return "redirect:/myHistorial";
         } catch (Exception exp){
@@ -363,7 +364,7 @@ public class AccesoControlador {
             return "redirect:/login";
 
         // Only pending orders can be deleted, once shipped or received it can no longer be canceled
-        if (SL.findRegisteredTransaction(fiscalCode).getStatus() != OrderStatus.PENDING)
+        if (SL.findRegisteredTransaction(fiscalCode).getEstado() != EstadoEnvio.PENDIENTE)
             return "redirect:/myHistorial"; // TODO: Add error message
 
         try {
@@ -371,13 +372,13 @@ public class AccesoControlador {
             Factura receipt = SL.findRegisteredTransaction(fiscalCode);
             int count = 0;
             for (Integer productId:
-                    receipt.getArticuloList()) {
-                Articulo product = SL.findRegisteredArticulo(productId);
-                product.setArticuloInStock(product.getArticuloInStock() + receipt.getAmount().get(count));
-                UDS.updateRegisteredArticulo(product);
+                    receipt.getArticulosL()) {
+                Articulo product = SL.findRegisteredProduct(productId);
+                product.setCantidad(product.getCantidad() + receipt.getMonto().get(count));
+                SA.updateRegisteredProduct(product);
             }
 
-            DDS.deleteRegisteredPendingTransaction(fiscalCode);
+            SE.deleteRegisteredPendingTransaction(fiscalCode);
 
             // TODO: email admin of order cancelation
 
@@ -396,13 +397,13 @@ public class AccesoControlador {
             return "redirect:/login";
 
         // Only shipped items can be received
-        if (SL.findRegisteredTransaction(fiscalCode).getStatus() != OrderStatus.SHIPPING)
+        if (SL.findRegisteredTransaction(fiscalCode).getEstado() != EstadoEnvio.ENVIO)
             return "redirect:/myHistorial"; // TODO: Add error message
 
         try {
             Factura receipt = SL.findRegisteredTransaction(fiscalCode);
-            receipt.setStatus(OrderStatus.DELIVERED);
-            UDS.updateRegisteredUserTransaction(receipt);
+            receipt.setEstado(EstadoEnvio.ENTREGADO);
+            SA.updateRegisteredUserTransaction(receipt);
 
             return "redirect:/myHistorial";
         } catch (Exception exp){
@@ -431,12 +432,12 @@ public class AccesoControlador {
         for (Factura r:
                 SL.findAllRegisteredTransactions()) {
             HashMap data = new HashMap();
-            data.put("fiscal", r.getFiscalCode());
-            data.put("user_email", r.getUser().getEmail());
-            data.put("user_name", r.getUser().getFullName());
-            data.put("time", r.getTransactionDate().toString().substring(0, r.getTransactionDate().toString().length() - 2));
-            data.put("total", "$" + r.getTotal().toString());
-            data.put("content", formatReceiptBody(r.getArticuloList(), r.getAmount()));
+            data.put("fiscal", r.getCodigoF());
+            data.put("user_email", r.getUsuario().getEmail());
+            data.put("user_name", r.getUsuario().getNombre() + " " + r.getUsuario().getApellido());
+            data.put("time", r.getFecha_pedido().toString().substring(0, r.getFecha_pedido().toString().length() - 2));
+            data.put("total", "$" + r.getPrecio_total().toString());
+            data.put("content", formatReceiptBody(r.getArticulosL(), r.getMonto()));
 
             rows[count++] = data;
         }
@@ -450,8 +451,8 @@ public class AccesoControlador {
 
         for (Integer i:
                 products) {
-            Articulo product = SL.findRegisteredArticulo(i);
-            buffer += amount.get(count++).toString() + "x " + product.getArticuloName() + " ------ $" + product.getArticuloPrice().toString() + "\n";
+            Articulo product = SL.findRegisteredProduct(i);
+            buffer += amount.get(count++).toString() + "x " + product.getNombre() + " ------ $" + product.getPrecio().toString() + "\n";
         }
 
         return buffer;
