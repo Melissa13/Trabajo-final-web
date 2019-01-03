@@ -1,4 +1,4 @@
-package com.example.trabajo_final.Servicios.Basicos;
+package com.example.trabajo_final.Servicios.Complementarias;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

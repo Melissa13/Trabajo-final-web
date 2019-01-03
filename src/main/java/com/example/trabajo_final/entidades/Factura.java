@@ -4,11 +4,8 @@ import com.example.trabajo_final.Tools.Enum.EstadoEnvio;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
 @Table(name = "facturas")
@@ -28,11 +25,11 @@ public class Factura implements Serializable {
     private EstadoEnvio estado;
     private String codigoF;
 
-    public Factura(Usuario usuario, ArrayList<Integer> monto, ArrayList<Integer> articulosL, Timestamp fecha_pedido, Float precio_total) {
+    public Factura(Usuario usuario, ArrayList<Integer> monto, ArrayList<Integer> articulosL, Float precio_total) {
         this.usuario = usuario;
         this.monto = monto;
         this.articulosL = articulosL;
-        this.fecha_pedido = fecha_pedido;
+        this.fecha_pedido = new Timestamp(Calendar.getInstance().getTime().getTime());
         this.precio_total = precio_total;
         this.estado = EstadoEnvio.PENDIENTE;
         this.codigoF= UUID.randomUUID().toString().split("-")[0].toUpperCase();
