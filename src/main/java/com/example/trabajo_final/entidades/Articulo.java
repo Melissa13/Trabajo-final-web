@@ -1,6 +1,7 @@
 package com.example.trabajo_final.entidades;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 
 @Entity
@@ -13,7 +14,7 @@ public class Articulo implements Serializable {
     private String nombre;
     private String descripcion;
     private String supplidor;
-    private float precio;
+    private Float precio;
     private Integer cantidad;
     private Byte[] foto_producto;
 
@@ -56,11 +57,11 @@ public class Articulo implements Serializable {
 
     public void setSupplidor(String supplidor) { this.supplidor = supplidor; }
 
-    public double getPrecio() { return precio; }
+    public Float getPrecio() { return precio; }
 
-    public void setPrecio(float precio) { this.precio = precio; }
+    public void setPrecio(Float precio) { this.precio = precio; }
 
-    public long getCantidad() { return cantidad; }
+    public Integer getCantidad() { return cantidad; }
 
     public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
 
